@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>StudioXDesign — Презентация компании 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=PT+Sans:wght@400;700&display=swap');
+  :root{--bg:#0d0c0a;--panel:#14130f;--card:#191713;--gold:#c9a45c;--gold-dim:#8a7344;--ink:#f2efe9;--muted:#9b958a;--line:#2a2721;--gap:6px;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  img{border-radius:12px;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:linear-gradient(180deg,#a8a6a2 0%,#999792 60%,#8e8c88 100%) fixed;
+    color:var(--ink);font-family:'PT Sans',Arial,sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  .deck{width:100%;max-width:1600px;margin:0 auto;display:block;font-size:0;padding:var(--gap);}
+  /* слайд — парящая карточка со скруглениями и мягкой тенью */
+  .slide{
+    display:block;width:100%;position:relative;background:var(--bg);
+    border-radius:18px;overflow:hidden;
+    padding:10px;
+    box-shadow:0 12px 30px rgba(0,0,0,.38), 0 4px 10px rgba(0,0,0,.26);
+    margin-bottom:var(--gap);
+  }
+  .slide:last-child{margin-bottom:0;}
+  .slide img.page{display:block;width:100%;height:auto;border-radius:12px;}
+  .tel-zone{position:absolute;left:36%;top:62%;width:29%;height:28%;z-index:5;}
+
+  .frame{position:relative;width:100%;aspect-ratio:16/9;background:var(--bg);container-type:size;overflow:hidden;font-size:16px;border-radius:12px;}
+  /* блок с дизайнерами — выше остальных на ~3 мм */
+  .frame.tall{aspect-ratio:16/9.9;}
+  .pad{position:absolute;inset:0;display:flex;flex-direction:column;padding:6cqh 7cqw 4.5cqh;}
+  .pad.tight{padding:3.6cqh 5cqw 3cqh;}
+  .eyebrow{color:var(--gold);font-size:1.5cqh;letter-spacing:.4em;text-transform:uppercase;font-weight:700;flex:none;}
+  .eyebrow::after{content:'';display:block;width:5cqw;height:.35cqh;background:var(--gold);margin-top:1.2cqh;}
+  .ftr{flex:none;display:flex;justify-content:space-between;align-items:center;color:#6c665a;font-size:1.3cqh;letter-spacing:.28em;text-transform:uppercase;font-weight:700;}
+
+  .s15{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3.4cqh;}
+  .s15 h1{font-family:'PT Serif',Georgia,serif;font-style:italic;font-weight:400;font-size:7.4cqh;line-height:1.12;}
+  .s15 .lead{color:var(--muted);font-size:2.5cqh;line-height:1.5;max-width:62cqw;}
+  .s15 .nums{display:flex;gap:6cqw;margin-top:1cqh;}
+  .s15 .nums b{font-family:'PT Serif',Georgia,serif;font-style:italic;color:var(--gold);font-size:7cqh;display:block;line-height:1;}
+  .s15 .nums span{display:block;margin-top:1cqh;color:var(--muted);font-size:1.35cqh;font-weight:700;letter-spacing:.24em;text-transform:uppercase;}
+
+  .s16-head{flex:none;margin-bottom:1.6cqh;}
+  .dgrid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:1.5cqh 1.2cqw;}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;position:relative;transition:border-color .35s,box-shadow .35s,transform .35s;}
+  .dcard.live{cursor:pointer;}
+  .dcard.live:hover,.dcard.live:focus-within{transform:translateY(-0.6cqh);border-color:var(--gold);box-shadow:0 2cqh 4cqh rgba(0,0,0,.5);}
+  .dphoto{flex:1;min-height:0;position:relative;overflow:hidden;background:#0f0e0b;border-radius:12px;}
+  .dphoto img{width:100%;height:100%;object-fit:cover;object-position:center 10%;display:block;transition:transform .6s;}
+  .dcard.live:hover .dphoto img{transform:scale(1.04);}
+  .dph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4cqh;border:1px dashed #3a352b;border-radius:12px;}
+  .dph .ring{width:8cqh;height:8cqh;border-radius:50%;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-family:'PT Serif',Georgia,serif;font-style:italic;color:var(--gold);font-size:3cqh;}
+  .dph small{color:#6c665a;font-size:1.1cqh;letter-spacing:.2em;text-transform:uppercase;font-weight:700;}
+  .recbtn{
+    position:absolute;left:6%;right:6%;bottom:3.6%;
+    border:1px solid var(--gold);cursor:pointer;border-radius:10px;
+    background:rgba(13,12,10,.82);backdrop-filter:blur(3px);
+    color:var(--gold);font-family:'PT Sans',sans-serif;font-weight:700;
+    font-size:1.5cqh;letter-spacing:.2em;text-transform:uppercase;
+    padding:1.4cqh 1cqw;display:flex;align-items:center;justify-content:center;gap:1cqw;
+    animation:glow 2.4s ease-in-out infinite;transition:background .3s,color .3s;
+  }
+  .recbtn::after{content:'→';font-size:1.2em;transition:transform .25s;}
+  .dcard.live:hover .recbtn{background:var(--gold);color:#171307;}
+  .dcard.live:hover .recbtn::after{transform:translateX(.6cqw);}
+  @keyframes glow{0%,100%{box-shadow:0 0 .4cqh rgba(201,164,92,.25);}50%{box-shadow:0 0 2.4cqh rgba(201,164,92,.65);}}
+  .dname{flex:none;padding:1.1cqh 1cqw;text-align:center;background:var(--card);border-top:1px solid var(--line);}
+  .dname b{display:block;font-family:'PT Serif',Georgia,serif;font-weight:400;font-size:2.1cqh;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dname span{display:block;margin-top:.4cqh;color:var(--gold);font-size:1.25cqh;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dname.ph b{color:#565147;font-style:italic;}.dname.ph span{color:#4a463e;}
+
+  .rail{position:fixed;top:0;right:0;width:3px;height:100%;z-index:40;}
+  .rail .fill{width:100%;height:0;background:#8a7344;transition:height .15s ease;}
+
+  .overlay{position:fixed;inset:0;background:rgba(8,7,5,.93);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .35s;padding:clamp(10px,2vmin,26px);font-size:16px;}
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .viewer{width:min(1100px,100%);height:100%;background:var(--panel);border:1px solid var(--gold-dim);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transform:translateY(22px) scale(.985);transition:transform .4s cubic-bezier(.2,.8,.2,1);box-shadow:0 40px 120px rgba(0,0,0,.7);}
+  .overlay.open .viewer{transform:none;}
+  .v-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);}
+  .v-head .who b{font-family:'PT Serif',Georgia,serif;font-weight:400;font-size:clamp(15px,2.4vmin,21px);display:block;}
+  .v-head .who span{color:var(--gold);font-size:8.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;display:block;margin-top:3px;}
+  .v-close{background:none;border:1px solid var(--gold-dim);color:var(--gold);width:38px;height:38px;font-size:16px;cursor:pointer;transition:.25s;flex:none;border-radius:9px;}
+  .v-close:hover{background:var(--gold);color:#0d0c0a;}
+  .v-stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;background:#0a0907;overflow:hidden;}
+  .imgwrap{position:relative;display:none;height:100%;width:100%;align-items:center;justify-content:center;animation:fadein .45s;}
+  .imgwrap.active{display:flex;}
+  .imgwrap img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain;border-radius:14px;}
+  .tel-glow{position:absolute;border:1px solid var(--gold);border-radius:8px;animation:glow 2.4s ease-in-out infinite;z-index:3;display:block;}
+  @keyframes fadein{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;background:rgba(13,12,10,.78);border:1px solid var(--gold-dim);border-radius:10px;color:var(--gold);font-size:17px;cursor:pointer;transition:.25s;z-index:4;}
+  .nav:hover{background:var(--gold);color:#0d0c0a;}
+  .nav.prev{left:10px;}.nav.next{right:10px;}
+  .v-foot{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-top:1px solid var(--line);}
+  .v-cap{color:var(--muted);font-size:clamp(11px,1.7vmin,13px);flex:1;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .v-cap b{color:var(--ink);}
+  .dots{display:flex;gap:7px;flex:none;}.dots i{width:7px;height:7px;border-radius:50%;background:#3c372d;cursor:pointer;transition:.25s;}
+  .dots i.on{background:var(--gold);transform:scale(1.35);}
+  .v-count{color:var(--gold);font-size:10px;font-weight:700;letter-spacing:.22em;flex:none;}
+  .toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,18px);background:var(--panel);border:1px solid var(--gold-dim);border-radius:12px;color:var(--ink);padding:12px 20px;font-size:13px;opacity:0;pointer-events:none;transition:.35s;z-index:200;text-align:center;max-width:92vw;}
+  .toast.show{opacity:1;transform:translate(-50%,0);}.toast b{color:var(--gold);}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+
+  .v-tel{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid var(--gold);color:var(--gold);border-radius:9px;padding:8px 12px;font-size:12px;font-weight:700;letter-spacing:.04em;white-space:nowrap;transition:.25s;}
+  .v-tel:hover{background:var(--gold);color:#0d0c0a;}
+  .v-tel::before{content:'\260E';font-size:13px;}
+  .vid{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+  .vid .frame{width:min(100%,1000px);aspect-ratio:16/9;max-height:100%;border-radius:14px;overflow:hidden;background:#0a0907;position:relative;}
+  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .vid .ph{position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;text-align:center;border:1px dashed #3a352b;border-radius:14px;padding:6vmin;}
+  .vid .ph .rt{width:7cqh;min-width:54px;height:7cqh;min-height:54px;border-radius:50%;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:24px;}
+  .vid .ph b{color:var(--ink);font-family:'PT Serif',Georgia,serif;font-weight:400;font-size:clamp(15px,2.6vmin,20px);}
+  .vid .ph span{color:#6c665a;font-size:12px;letter-spacing:.04em;max-width:560px;line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="rail"><div class="fill" id="fill"></div></div>
+<div class="deck" id="deck">
+<div class="slide"><img class="page" src="images/img_01.jpg" alt="Слайд 1"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_02.jpg" alt="Слайд 2"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_03.jpg" alt="Слайд 3"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_04.jpg" alt="Слайд 4"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_05.jpg" alt="Слайд 5"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_06.jpg" alt="Слайд 6"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_07.jpg" alt="Слайд 7"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_08.jpg" alt="Слайд 8"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_09.jpg" alt="Слайд 9"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_10.jpg" alt="Слайд 10"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_11.jpg" alt="Слайд 11"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_12.jpg" alt="Слайд 12"></div>
+<div class="slide"><img loading="lazy" decoding="async" class="page" src="images/img_13.jpg" alt="Слайд 13"></div>
+
+<div class="slide"><div class="frame">
+  <div class="pad">
+    <div class="eyebrow">Партнёры&nbsp;&nbsp;/&nbsp;&nbsp;Рекомендации</div>
+    <div class="s15">
+      <h1>Дизайнеры и архитекторы,<br>достойные взаимной рекомендации</h1>
+      <p class="lead">ТОП-10 дизайнеров и архитекторов Москвы и Сочи, с которыми мы реализовали совместные проекты. Мы знаем их работу изнутри — и с уверенностью называем лучшими в отрасли.</p>
+      <div class="nums">
+        <div><b>Топ-10</b><span>Дизайнеров</span></div>
+        <div><b>13+</b><span>Лет опыта</span></div>
+        <div><b>Москва — Сочи</b><span>География</span></div>
+      </div>
+    </div>
+    <div class="ftr"><span>StudioXDesign</span><span>14 / 16</span></div>
+  </div>
+</div></div>
+
+<div class="slide"><div class="frame tall">
+  <div class="pad tight">
+    <div class="s16-head">
+      <div class="eyebrow">Дизайнеры&nbsp;&nbsp;/&nbsp;&nbsp;Рекомендуют нас</div>
+    </div>
+    <div class="dgrid">
+      <div class="dcard live">
+        <div class="dphoto"><img loading="lazy" decoding="async" src="images/img_14.jpg" alt="Елена Кардашина">
+          <button class="recbtn" onclick="openViewer()">Совместные проекты</button>
+        </div>
+        <div class="dname"><b>Елена Кардашина</b><span>Топ-10 дизайнеров · Москва — Сочи</span></div>
+      </div>
+      
+      <div class="dcard live">
+        <div class="dphoto"><img loading="lazy" decoding="async" src="images/img_15.jpg" alt="INGA PSALOM">
+          <button class="recbtn" onclick="openViewerInga()">Совместные проекты</button>
+        </div>
+        <div class="dname"><b>INGA PSALOM</b><span>Топ-10 дизайнеров · Москва — Сочи</span></div>
+      </div>
+      <div class="dcard live">
+        <div class="dphoto"><img loading="lazy" decoding="async" src="images/img_16.jpg" alt="Ruzanna Sartaniya">
+          <button class="recbtn" onclick="soon()">Совместные проекты</button>
+        </div>
+        <div class="dname"><b>Ruzanna Sartaniya</b><span>Топ-10 дизайнеров · Москва — Сочи</span></div>
+      </div>
+      <div class="dcard live">
+        <div class="dphoto"><img loading="lazy" decoding="async" src="images/img_17.jpg" alt="Jelena Paunic">
+          <button class="recbtn" onclick="soon()">Совместные проекты</button>
+        </div>
+        <div class="dname"><b>Jelena Paunic</b><span>Топ-10 дизайнеров · Москва — Сочи</span></div>
+      </div>
+      <div class="dcard live">
+        <div class="dphoto"><img loading="lazy" decoding="async" src="images/img_18.jpg" alt="Регина">
+          <button class="recbtn" onclick="soon()">Совместные проекты</button>
+        </div>
+        <div class="dname"><b>Регина</b><span>Топ-10 дизайнеров · Москва — Сочи</span></div>
+      </div>
+      <div class="dcard live">
+        <div class="dphoto"><img loading="lazy" decoding="async" src="images/img_19.jpg" alt="Нарина Федорова">
+          <button class="recbtn" onclick="openViewerNarina()">Совместные проекты</button>
+        </div>
+        <div class="dname"><b>Нарина Федорова</b><span>Топ-10 дизайнеров · Москва — Сочи</span></div>
+      </div>
+    </div>
+    <div class="ftr" style="margin-top:1.6cqh"><span>StudioXDesign</span><span>15 / 16</span></div>
+  </div>
+</div></div>
+
+<div class="slide">
+  <img loading="lazy" decoding="async" class="page" src="images/img_20.jpg" alt="Контакты StudioXDesign">
+  <a class="tel-zone" href="tel:+79384664484" aria-label="Позвонить StudioXDesign"></a>
+</div>
+
+</div>
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeViewer()">
+  <div class="viewer" role="dialog" aria-modal="true" aria-label="Проекты дизайнера">
+    <div class="v-head">
+      <div class="who"><b>Елена Кардашина</b><span>ATLAS Interior · Сочи · совместный проект</span></div>
+      <button class="v-close" onclick="closeViewer()" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="v-stage" id="vStage">
+      <button class="nav prev" onclick="step(-1)" aria-label="Назад">‹</button>
+      <div class="imgwrap active">
+        <img loading="lazy" decoding="async" id="coverImg" src="images/img_21.jpg" alt="ATLAS Interior">
+        <a class="tel-glow" id="telGlow" href="tel:+79284457297" aria-label="Позвонить Елене Кардашиной"></a>
+      </div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_22.jpg" alt="Дом в с. Черешня"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_23.jpg" alt="Квартира ЖК Морская Симфония"></div>
+      <button class="nav next" onclick="step(1)" aria-label="Вперёд">›</button>
+    </div>
+    <div class="v-foot">
+      <div class="v-cap" id="vCap"></div>
+      <div class="dots" id="vDots"></div>
+      <div class="v-count" id="vCount"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlayInga" onclick="if(event.target===this)closeViewerInga()">
+  <div class="viewer" role="dialog" aria-modal="true" aria-label="Проекты Inga Psalom">
+    <div class="v-head">
+      <div class="who"><b>INGA PSALOM</b><span>Interior Design Studio · Сочи · совместный проект</span></div>
+      <div style="display:flex;gap:8px;align-items:center;flex:none;">
+        <a class="v-tel" href="tel:+79881838606">+7&nbsp;988&nbsp;183&nbsp;86&nbsp;06</a>
+        <button class="v-close" onclick="closeViewerInga()" aria-label="Закрыть">✕</button>
+      </div>
+    </div>
+    <div class="v-stage" id="vStageInga">
+      <button class="nav prev" onclick="stepInga(-1)" aria-label="Назад">‹</button>
+      <div class="imgwrap active"><img loading="lazy" decoding="async" src="images/img_24.jpg" alt="Дизайн-проект ЖК Триумф"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_25.jpg" alt="Рендеры проекта — спальня"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_26.jpg" alt="Реализовано — гостиная"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_27.jpg" alt="Реализовано — кухня-столовая"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_28.jpg" alt="Реализовано — спальня"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_29.jpg" alt="Реализовано — санузел"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_30.jpg" alt="Реализовано — прихожая"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_31.jpg" alt="Монтаж — команда StudioXDesign"></div>
+      <div class="imgwrap"><div class="vid"><div class="frame" id="ingaVid">
+        <div class="ph"><div class="rt">&#9654;</div><b>Видео проекта · RuTube</b><span>Здесь появится видеообзор объекта. Чтобы подключить ролик, вставьте ссылку RuTube в переменную RUTUBE_URL в скрипте ниже.</span></div>
+      </div></div></div>
+      <button class="nav next" onclick="stepInga(1)" aria-label="Вперёд">›</button>
+    </div>
+    <div class="v-foot">
+      <div class="v-cap" id="vCapInga"></div>
+      <div class="dots" id="vDotsInga"></div>
+      <div class="v-count" id="vCountInga"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlayNarina" onclick="if(event.target===this)closeViewerNarina()">
+  <div class="viewer" role="dialog" aria-modal="true" aria-label="Проекты Нарина Федорова">
+    <div class="v-head">
+      <div class="who"><b>FEDOROVADESIGN</b><span>Бюро интерьерного дизайна · совместный проект</span></div>
+      <div style="display:flex;gap:8px;align-items:center;flex:none;">
+        <a class="v-tel" href="tel:+79882367557">+7&nbsp;988&nbsp;236&nbsp;75&nbsp;57</a>
+        <button class="v-close" onclick="closeViewerNarina()" aria-label="Закрыть">✕</button>
+      </div>
+    </div>
+    <div class="v-stage" id="vStageNarina">
+      <button class="nav prev" onclick="stepNarina(-1)" aria-label="Назад">‹</button>
+      <div class="imgwrap active"><img loading="lazy" decoding="async" src="images/img_32.jpg" alt="Гостиная и кухня-столовая"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_33.jpg" alt="Кухня-столовая"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_34.jpg" alt="Спальня и гардеробная"></div>
+      <div class="imgwrap"><img loading="lazy" decoding="async" src="images/img_35.jpg" alt="Кухня-столовая, вид от прихожей"></div>
+      <button class="nav next" onclick="stepNarina(1)" aria-label="Вперёд">›</button>
+    </div>
+    <div class="v-foot">
+      <div class="v-cap" id="vCapNarina"></div>
+      <div class="dots" id="vDotsNarina"></div>
+      <div class="v-count" id="vCountNarina"></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"><b>Место зарезервировано.</b>&nbsp;Фото и проекты дизайнера будут добавлены.</div>
+<script>
+  const fill=document.getElementById('fill');
+  addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-innerHeight;const pct=max>0?scrollY/max:0;fill.style.height=(pct*100)+'%';},{passive:true});
+  const captions=[
+    '<b>ATLAS Interior · Сочи</b> — нажмите на номер, чтобы позвонить.',
+    '<b>Дом 300 м², с. Черешня</b> — потолки и свет: StudioXDesign.',
+    '<b>Квартира 32 м², ЖК «Морская Симфония»</b> — StudioXDesign.'
+  ];
+  const overlay=document.getElementById('overlay'),vstage=document.getElementById('vStage');
+  const wraps=()=>vstage.querySelectorAll('.imgwrap'),dotsBox=document.getElementById('vDots');
+  let idx=0;
+  captions.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>show(i);dotsBox.appendChild(d);});
+  const cover=document.getElementById('coverImg'), glow=document.getElementById('telGlow');
+  function placeGlow(){
+    if(!cover.complete||!cover.clientWidth)return;
+    const L=cover.offsetLeft,T=cover.offsetTop,Wi=cover.clientWidth,Hi=cover.clientHeight;
+    glow.style.left=(L+Wi*0.20)+'px';glow.style.top=(T+Hi*0.905)+'px';
+    glow.style.width=(Wi*0.60)+'px';glow.style.height=(Hi*0.062)+'px';
+  }
+  cover.addEventListener('load',placeGlow);
+  addEventListener('resize',placeGlow);
+  function show(i){const l=wraps();idx=(i+l.length)%l.length;l.forEach((w,n)=>w.classList.toggle('active',n===idx));dotsBox.querySelectorAll('i').forEach((d,n)=>d.classList.toggle('on',n===idx));document.getElementById('vCap').innerHTML=captions[idx];document.getElementById('vCount').textContent=(idx+1)+' / '+captions.length;if(idx===0)requestAnimationFrame(placeGlow);}
+  function step(d){show(idx+d);}
+  function openViewer(){show(0);overlay.classList.add('open');document.body.style.overflow='hidden';requestAnimationFrame(()=>requestAnimationFrame(placeGlow));}
+  function closeViewer(){overlay.classList.remove('open');document.body.style.overflow='';}
+  function soon(){const t=document.getElementById('toast');t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2400);}
+  document.addEventListener('keydown',e=>{if(!overlay.classList.contains('open'))return;if(e.key==='Escape')closeViewer();if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1);});
+  let tx=null;
+  vstage.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+  vstage.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>45)step(dx<0?1:-1);tx=null;},{passive:true});
+</script>
+<script>
+(function(){
+  /* ====== ВСТАВЬ ССЫЛКУ RUTUBE СЮДА ======
+     Формат embed: https://rutube.ru/play/embed/XXXXXXXXXXXXXXXX  */
+  const RUTUBE_URL = "";
+  const overlay=document.getElementById('overlayInga');
+  const stage=document.getElementById('vStageInga');
+  const dotsBox=document.getElementById('vDotsInga');
+  const capBox=document.getElementById('vCapInga');
+  const countBox=document.getElementById('vCountInga');
+  const wraps=()=>stage.querySelectorAll('.imgwrap');
+  const captions=[
+    '<b>ЖК «Триумф», Адлер · Сочи</b> — дизайн-проект: рендеры + реализация под ключ совместно со StudioXDesign.',
+    '<b>Рендеры</b> — спальня и гардеробная зоны.',
+    '<b>Реализовано · гостиная</b> — трековый свет и потолки StudioXDesign.',
+    '<b>Реализовано · кухня-столовая</b> — линейное освещение StudioXDesign.',
+    '<b>Реализовано · спальня</b> — парящий потолок и подсветка.',
+    '<b>Реализовано · санузел</b> — точечный свет, латунь.',
+    '<b>Реализовано · прихожая</b> — трековый свет, зеркальные двери.',
+    '<b>Монтаж</b> — команда StudioXDesign на объекте.',
+    '<b>Видеообзор проекта · RuTube</b> — ролик добавляется ссылкой в скрипте.'
+  ];
+  let idx=0;
+  captions.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>show(i);dotsBox.appendChild(d);});
+  function show(i){const l=wraps();idx=(i+l.length)%l.length;l.forEach((w,n)=>w.classList.toggle('active',n===idx));dotsBox.querySelectorAll('i').forEach((d,n)=>d.classList.toggle('on',n===idx));capBox.innerHTML=captions[idx]||'';countBox.textContent=(idx+1)+' / '+l.length;}
+  window.stepInga=function(d){show(idx+d);};
+  window.openViewerInga=function(){show(0);overlay.classList.add('open');document.body.style.overflow='hidden';};
+  window.closeViewerInga=function(){overlay.classList.remove('open');document.body.style.overflow='';};
+  document.addEventListener('keydown',e=>{if(!overlay.classList.contains('open'))return;if(e.key==='Escape')closeViewerInga();if(e.key==='ArrowRight')stepInga(1);if(e.key==='ArrowLeft')stepInga(-1);});
+  let tx=null;
+  stage.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+  stage.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>45)stepInga(dx<0?1:-1);tx=null;},{passive:true});
+  if(RUTUBE_URL){document.getElementById('ingaVid').innerHTML='<iframe src="'+RUTUBE_URL+'" allow="clipboard-write; autoplay; fullscreen" allowfullscreen></iframe>';}
+})();
+</script>
+<script>
+(function(){
+  const overlay=document.getElementById('overlayNarina');
+  const stage=document.getElementById('vStageNarina');
+  const dotsBox=document.getElementById('vDotsNarina');
+  const capBox=document.getElementById('vCapNarina');
+  const countBox=document.getElementById('vCountNarina');
+  const wraps=()=>stage.querySelectorAll('.imgwrap');
+  const captions=[
+    '<b>Квартира, Сочи</b> — дизайн-проект и реализация совместно с FEDOROVADESIGN.',
+    '<b>Реализовано · кухня-столовая</b> — встроенная техника Miele, латунные акценты.',
+    '<b>Реализовано · спальня и гардеробная</b> — парящий потолок, подсветка, гардеробная со стеклянными фасадами.',
+    '<b>Реализовано · кухня-столовая</b> — вид от прихожей.'
+  ];
+  let idx=0;
+  captions.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>show(i);dotsBox.appendChild(d);});
+  function show(i){const l=wraps();idx=(i+l.length)%l.length;l.forEach((w,n)=>w.classList.toggle('active',n===idx));dotsBox.querySelectorAll('i').forEach((d,n)=>d.classList.toggle('on',n===idx));capBox.innerHTML=captions[idx]||'';countBox.textContent=(idx+1)+' / '+l.length;}
+  window.stepNarina=function(d){show(idx+d);};
+  window.openViewerNarina=function(){show(0);overlay.classList.add('open');document.body.style.overflow='hidden';};
+  window.closeViewerNarina=function(){overlay.classList.remove('open');document.body.style.overflow='';};
+  document.addEventListener('keydown',e=>{if(!overlay.classList.contains('open'))return;if(e.key==='Escape')closeViewerNarina();if(e.key==='ArrowRight')stepNarina(1);if(e.key==='ArrowLeft')stepNarina(-1);});
+  let tx=null;
+  stage.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+  stage.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>45)stepNarina(dx<0?1:-1);tx=null;},{passive:true});
+})();
+</script>
+
+</body>
+</html>
